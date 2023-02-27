@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Edit Profile
+{% endblock  %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+{% if user.is_authenticated %}
+    {% if user.id == profile.user.id %}
+        <div class="form-group">
+            <h1>Edit Profile Page</h1>
+            <br/><br/>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy}}
+                <hr>
+                <button  class="btn btn-primary">Update Profile</button>
+        </div>
+    {% else %}
+        You can not edit another user's page
+    {% endif %}
+
+{% else %}
+    You are not logged in
+{% endif %}
+
+    </div>
+{% endblock  %}

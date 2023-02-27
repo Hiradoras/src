@@ -1,0 +1,92 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+{{ticket.title}}
+{% endblock title %}
+
+{% block content %}
+<div class="container text-center">
+    <div class="row">
+      <div class="col">
+        <!--card-->
+        <div class="card text-start" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Ticket by: </b>{{ticket.author}}</li>
+            <li class="list-group-item"><b>Country: </b>{{ticket.get_country_display}}</li>
+            <li class="list-group-item"><b>Company: </b>{{ticket.get_company_display}}</li>
+            <li class="list-group-item"><b>Ticket by: </b>{{ticket.author.profile.first_name}} {{ticket.author.profile.last_name}}</li>
+            <li class="list-group-item"><b>Phone: </b>{{ticket.author.profile.phone_number}}</li> <!--???-->
+            <li class="list-group-item"><b>Date: </b>{{ticket.date_added}}</li>
+            <li class="list-group-item"><b>Solved by: </b>{{ticket.solved_by}}</li>
+            <li class="list-group-item"><b>Solved Date: </b>
+              {% if ticket.status == False %}
+              NONE
+              {% else %}
+              {% endif %}
+          </li>
+          </ul>
+          <div class="card-footer">
+            <b>Status: </b>{% if ticket.status == False %}
+            Not Solved ❌
+            {% else %}
+            Solved ✅
+            {% endif %}
+          </div>
+        </div>
+        <!--card-->
+        {% if user.profile.company == "SUP" %}
+        <!--Urgent Form-->
+        {% if ticket.is_urgent %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+          <label class="form-check-label" for="flexCheckChecked">
+            Urgent
+          </label>
+        </div>
+        {% else %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Urgent
+          </label>
+        </div>
+        {% endif %}
+        <!--Urgent Form End-->
+
+        <!--Status Form-->
+        {% if ticket.status %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+          <label class="form-check-label" for="flexCheckChecked">
+            Solved
+          </label>
+        </div>
+        {% else %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Solved
+          </label>
+        </div>
+        {% endif %}
+
+        <!--Status Form End-->
+
+        {% endif %}
+      </div>
+      
+      <div class="col">
+        <h2><u><b>{{ticket.title}}</b></u></h2>
+        <hr>
+        {{ticket.content.html|safe}}
+      </div>
+      
+      <div class="col">
+        
+        [chat]
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}

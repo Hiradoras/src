@@ -1,0 +1,91 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+
+{{user.profile}}
+
+{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+  <div class="row justify-content-md-center">
+    []
+  </div>
+  <div class="row">
+    <div class="col">
+      <h1>{{profile}}'s Tickets</h1>
+        <hr>
+        {% for ticket in ticket_list %}
+        {% if ticket.status == False %}
+        {% if ticket.is_urgent %}
+        <div class="card-group">
+          <div class="card w-75 text-bg-danger">
+            <div class="card-body">
+              <h5 class="card-title">{{ticket.title}}</h5>
+              <hr>
+              <p class="card-text"><b>Company: </b>{{ticket.get_company_display}} / <b>Country: </b> {{ticket.get_country_display}} </p>
+              <p class="card-text"><b>Author: </b>{{ticket.author}}</p>
+              <p class="card-text"><b>Ticket id: </b>{{ticket.id}}</p>
+              <p class="card-text"><b>Date: </b>{{ticket.date_added}}</p>
+              <a href="{% url 'ticket-detail' ticket.pk %}" class="btn btn-primary">Details</a>
+            </div>
+          </div>
+        </div>
+        <hr>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+  
+        
+        {% for ticket in ticket_list %}
+        {% if ticket.status == False %}
+        {% if ticket.is_urgent %}
+        
+          {% else %}
+          <div class="card-group">
+            <div class="card w-75 text-bg-warning">
+              <div class="card-body">
+                <h5 class="card-title">{{ticket.title}}</h5>
+                <hr>
+                <p class="card-text"><b>Company: </b>{{ticket.get_company_display}} / <b>Country: </b> {{ticket.get_country_display}} </p>
+                <p class="card-text"><b>Author: </b>{{ticket.author}}</p>
+                <p class="card-text"><b>Ticket id: </b>{{ticket.id}}</p>
+                <p class="card-text"><b>Date: </b>{{ticket.date_added}}</p>
+                <a href="{% url 'ticket-detail' ticket.pk %}" class="btn btn-primary">Details</a>
+              </div>
+            </div>
+          </div>
+          <hr>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        
+    </div>
+    <div class="col-md-auto">
+      Variable width content
+    </div>
+    <div class="col col-lg-2">
+      <h2>{{profile}}</h2>
+      <hr>
+      <div class="card text-start" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Username: </b>{{profile.user}}</li>
+          <li class="list-group-item"><b>First Name: </b>{{profile.first_name}}</li>
+          <li class="list-group-item"><b>Last Name: </b>{{profile.last_name}}</li>
+          <li class="list-group-item"><b>Country: </b>{{profile.get_country_display}}</li>
+          <li class="list-group-item"><b>Company: </b>{{profile.get_company_display}}</li>
+          <li class="list-group-item"><b>Phone Number: </b>{{profile.phone_number}}</li>
+          <li class="list-group-item"><b>E-mail: </b>{{profile.email}}</li>
+
+        </li>
+        </ul>
+        <div class="card-footer">
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock  %}

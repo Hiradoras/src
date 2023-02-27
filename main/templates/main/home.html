@@ -1,0 +1,155 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<style>
+  .div{text-align: center;}
+  h1{text-align: center;}
+  #intro img,
+  #intro h4{
+    display: inline;
+  }
+  #users{
+
+  } 
+</style>
+
+<div class="container text-center">
+  <div class="container text-center">
+    <div class="row">
+      <!--Top Left-->
+      {% if user.is_authenticated %}
+      <div class="col">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{user.profile}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{user.profile.first_name}} {{user.profile.last_name}}</h6>
+            <p class="card-text"><b>Company:</b> {{user.profile.get_company_display}}</p>
+            <p class="card-text"><b>Country:</b> {{user.profile.get_country_display}}</p>
+            <a href="{% url 'show-profile' user.profile.id %}" class="btn btn-primary">Go Profile</a>        
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="col">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title"><b>Guest</b></h5>
+            <h6 class="card-subtitle mb-2 text-muted"></h6>
+            <p class="card-text"><b></b></p>
+            <p class="card-text"><b></b></p>
+            <a href="{% url 'login' %}" class="btn btn-primary">Login</a>        
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <!--Top Left-->
+      <div class="col-6">
+        <form method="get">
+          {{ form }}
+        <br>
+          <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+        <hr>
+      </div>
+      <div class="col">
+        3 of 3
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <h1>Solved Tickets</h1>
+      <hr>
+      <!-- Solved Tickets -->
+      {% for ticket in object_list %}
+      {% if ticket.status %}
+      <div class="card-group ">
+      <div class="card w-75 text-bg-success" >
+        <div class="card-body">
+          <h5 class="card-title">{{ticket.title}}</h5>
+          <hr>
+          <p class="card-text"><b>Company: </b>{{ticket.get_company_display}}</p>
+          <p class="card-text"> <b>Country: </b> {{ticket.get_country_display}} </p>
+          <p class="card-text"><b>Author: </b>{{ticket.author}}</p>
+          <p class="card-text"><b>Ticket id: </b>{{ticket.id}}</p>
+          <p class="card-text"><b>Date: </b>{{ticket.date_added}}</p>
+          <a href="{% url 'show-profile' ticket.author.profile.id %}" class="btn btn-primary">Go {{ticket.author}}'s Profile</a>
+          <a href="{% url 'ticket-detail' ticket.pk %}" class="btn btn-primary">Details</a>
+        </div>
+      </div>
+      <!-- Solved Tickets -->
+    </div>
+    <hr>
+    {% endif %}
+    {% empty %}
+              <tr>
+                <td colspan="3">No tickets found.</td>
+              </tr>              
+      {% endfor %}      
+    </div>
+    <div class="col-6">
+      <h1>Tickets</h1>
+      <hr>
+      <!--Tickets-->
+      {% for ticket in object_list %}
+      {% if ticket.status == False %}
+      {% if ticket.is_urgent %}
+      <div class="card-group">
+        <div class="card w-75 text-bg-danger">
+          <div class="card-body">
+            <h5 class="card-title">{{ticket.title}}</h5>
+            <hr>
+            <p class="card-text"><b>Company: </b>{{ticket.get_company_display}}</p>
+            <p class="card-text"><b>Country: </b> {{ticket.get_country_display}} </p>
+            <p class="card-text"><b>Author: </b>{{ticket.author}}</p>
+            <p class="card-text"><b>Ticket id: </b>{{ticket.id}}</p>
+            <p class="card-text"><b>Date: </b>{{ticket.date_added}}</p>
+            <a href="{% url 'show-profile' ticket.author.profile.id %}" class="btn btn-primary">Go {{ticket.author}}'s Profile</a>
+            <a href="{% url 'ticket-detail' ticket.pk %}" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+
+      
+      {% for ticket in object_list %}
+      {% if ticket.status == False %}
+      {% if ticket.is_urgent %}
+      
+        {% else %}
+        <div class="card-group">
+          <div class="card w-75 text-bg-warning">
+            <div class="card-body">
+              <h5 class="card-title">{{ticket.title}}</h5>
+              <hr>
+              <p class="card-text"><b>Company: </b>{{ticket.get_company_display}} / <b>Country: </b> {{ticket.get_country_display}} </p>
+              <p class="card-text"><b>Author: </b>{{ticket.author}}</p>
+              <p class="card-text"><b>Ticket id: </b>{{ticket.id}}</p>
+              <p class="card-text"><b>Date: </b>{{ticket.date_added}}</p>
+              <a href="{% url 'show-profile' ticket.author.profile.id %}" class="btn btn-primary">Go {{ticket.author}}'s Profile</a>
+              <a href="{% url 'ticket-detail' ticket.pk %}" class="btn btn-primary">Details</a>
+            </div>
+          </div>
+        </div>
+        <hr>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+        
+            <!-- Tickets -->
+    </div>
+    <div class="col">
+      [Chat]
+    </div>
+  </div>
+</div>
+<hr>
+
+
+{% endblock %}
